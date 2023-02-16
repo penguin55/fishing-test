@@ -1,4 +1,3 @@
-using AriUtomo.Gameplay;
 using AriUtomo.Helper;
 using AriUtomo.Pattern;
 using AriUtomo.UI;
@@ -108,7 +107,7 @@ namespace AriUtomo.Manager
         public void PullingBait(out Tween pulling_bait_tween)
         {
             var control_pos = (bait.position + pivotRod.position) / 2f + (Vector3.up * 1.5f);
-            pulling_bait_tween = bait.DOPath(new Vector3[] { bait.position, control_pos, pivotRod.position }, baseThrowSpeed + (baseThrowSpeed * castPower), PathType.CatmullRom).SetEase(Ease.Linear);
+            pulling_bait_tween = bait.DOPath(new Vector3[] { bait.position, control_pos, pivotRod.position }, (baseThrowSpeed / 1.4f) + (baseThrowSpeed / 1.4f * castPower), PathType.CatmullRom).SetEase(Ease.Linear);
         }
     }
 }

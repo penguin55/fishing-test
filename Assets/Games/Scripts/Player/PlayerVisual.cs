@@ -21,8 +21,6 @@ namespace AriUtomo.Player
             animator.SetBool("Pulling Fishing Line", status.onPullingFishingLine);
         }
 
-        public void UpdateAnimationMessage(string animation_message) => animationCurrentMessage = animation_message;
-        public bool IsAnimationOnEnd(string animation_name) => animationCurrentMessage.Equals($"END_{animation_name.ToUpper()}");
         public bool CheckAnimationMessage(string animation_message) => animationCurrentMessage.Equals(animation_message.ToUpper());
     }
 }
