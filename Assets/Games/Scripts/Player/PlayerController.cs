@@ -3,7 +3,6 @@ using AriUtomo.Pattern;
 using DG.Tweening;
 using MonsterLove.StateMachine;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace AriUtomo.Player

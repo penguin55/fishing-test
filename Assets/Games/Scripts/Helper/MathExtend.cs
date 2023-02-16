@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace AriUtomo.Helper
 {
     public static class MathExtend

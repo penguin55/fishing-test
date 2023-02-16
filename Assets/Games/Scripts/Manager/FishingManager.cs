@@ -4,7 +4,6 @@ using AriUtomo.Pattern;
 using AriUtomo.UI;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace AriUtomo.Manager
 {
@@ -22,7 +21,7 @@ namespace AriUtomo.Manager
         [SerializeField] private Transform bait;
 
         private HUD hud;
-        private FishSpawner fishSpawner;
+        private SwarmFishManager swarmFishManager;
 
         private float castPower;
         private int powerIncrementDirection = 1;
@@ -31,7 +30,7 @@ namespace AriUtomo.Manager
         protected void Awake()
         {
             hud = ServiceLocator.GetService<HUD>();
-            fishSpawner = ServiceLocator.GetService<FishSpawner>();
+            swarmFishManager = ServiceLocator.GetService<SwarmFishManager>();
         }
 
         public void StartFishing()
@@ -48,7 +47,6 @@ namespace AriUtomo.Manager
             }
 
             bait.gameObject.SetActive(false);
-            fishSpawner.DeactiveLastSpawning();
         }
 
         //Holding the cast determines the value of the cast power, the greater the value of the cast power, the farther the bait will be thrown
@@ -85,7 +83,7 @@ namespace AriUtomo.Manager
                     target_thrown = hit.point + (Vector3.down * 1.1f);
                     throw_status = true;
                     throwing_tween = bait.DOPath(new Vector3[] { pivotRod.position, (pivotRod.position + target_thrown) / 2f + Vector3.up * 2f, target_thrown }, baseThrowSpeed + (baseThrowSpeed * castPower), PathType.CatmullRom).SetEase(Ease.Linear);
-                    throwing_tween.OnComplete(() => fishSpawner.RandomSpawnFish(target_thrown));
+                    throwing_tween.OnComplete(() => swarmFishManager.BaitFish(bait.position));
                 } else
                 {
                     target_thrown = hit.point;
@@ -99,9 +97,8 @@ namespace AriUtomo.Manager
         //Checking is there a fish when pulling bait
         public bool TryCatchFish()
         {
-            Collider[] coll = Physics.OverlapSphere(bait.position, 1f, objectLayer);
-            var catch_status = coll.Length > 0;
-            if (catch_status) coll[0].transform.parent = bait;
+            var catch_status = swarmFishManager.TryFetchFish(out GameObject fetched_fish);
+            if (catch_status) fetched_fish.transform.parent = bait;
 
             return catch_status;
         }
