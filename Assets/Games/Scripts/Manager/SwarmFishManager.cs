@@ -45,7 +45,7 @@ namespace AriUtomo.Manager
                 {
                     bittenBait = true;
                     // Do animation jump a little to fish for feedback impact
-                    fishBitesBait.transform.DOPunchPosition(Vector3.up * 0.2f, 0.2f).SetEase(Ease.Linear);
+                    fishBitesBait.transform.DOPunchPosition(Vector3.up * 0.2f, 0.2f).SetEase(Ease.Linear).OnKill(()=> fishBitesBait.transform.position = bait_position);
                 });
                 t_baitFish = sequence;
             }
@@ -55,6 +55,7 @@ namespace AriUtomo.Manager
         {
             var fetch_status = false;
             fetched_fish = null;
+            t_baitFish.Kill();
 
             if (bittenBait)
             {
@@ -65,8 +66,6 @@ namespace AriUtomo.Manager
             } else
             {
                 //Fish run back to original position
-                t_baitFish.Kill();
-
                 var fish = fishBitesBait;
                 var delta_time_move = ((fishBitesBait.transform.position - fetchedPosition).magnitude / REFERENCE_DISTANCE) * REFERENCE_TIME;
 
